@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Photobooth</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&family=Sacramento&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to bottom right, lavenderblush, lavender);
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .page {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      width: 100%;
+      position: relative;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    #home-page {
+      display: flex;
+    }
+
+    h1 {
+      font-size: 4rem;
+      color: white;
+      text-shadow: 3px 3px #b478d6;
+      margin-bottom: 1rem;
+      animation: popIn 1.5s ease-out;
+    }
+
+    .subheading {
+      font-size: 1.5rem;
+      color: #8e44ad;
+      margin-bottom: 2rem;
+      animation: fadeIn 2s ease;
+    }
+
+    button {
+      font-size: 1.3rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #d6a4ec, #a890fe);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #b478d6, #9372f1);
+    }
+
+    #click-btn {
+      position: absolute;
+      top: 0.1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+    }
+
+    #camera-area {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    #video {
+      border: 5px solid white;
+      border-radius: 20px;
+      max-width: 480px;
+      box-shadow: 0 0 15px rgba(180, 120, 214, 0.5);
+    }
+
+    #controls {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 20px;
+      box-shadow: 2px 2px 15px rgba(180, 120, 214, 0.3);
+    }
+
+    #filter {
+      padding: 0.6rem;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+    }
+
+    #countdown {
+      font-size: 4rem;
+      color: #8e44ad;
+      margin-top: 1rem;
+    }
+
+    #strip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 2rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(180, 120, 214, 0.3);
+    }
+
+    #strip img {
+      width: 120px;
+      margin: 0.5rem 0;
+      border-radius: 10px;
+    }
+
+    #again-btn, #download-btn {
+      margin-top: 1.5rem;
+    }
+
+    #flash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1000;
+      transition: opacity 0.3s ease;
+    }
+
+    .sparkle {
+      position: absolute;
+      color: #b478d6;
+      font-size: 1.5rem;
+      animation: floatSparkle 3s ease-out infinite;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.5); }
+      60% { opacity: 1; transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes floatSparkle {
+      0% { transform: translateY(0); opacity: 1; }
+      50% { transform: translateY(-10px) rotate(15deg); opacity: 0.8; }
+      100% { transform: translateY(-25px) rotate(-15deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Home Page -->
+  <div id="home-page" class="page scrapbook">
+    <h1>My Photobooth</h1>
+    <p class="subheading">No booth? No problem.</p>
+    <button id="start-btn">Start now!</button>
+  </div>
+
+  <!-- Camera Page -->
+  <div id="video-page" class="page">
+    <button id="click-btn">Click!</button>
+    <div id="camera-area">
+      <video id="video" autoplay playsinline></video>
+      <div id="controls">
+        <label for="filter">Filter:</label>
+        <select id="filter">
+          <option value="none">None</option>
+          <option value="grayscale(100%)">Grayscale</option>
+          <option value="sepia(100%)">Sepia</option>
+          <option value="hue-rotate(90deg)">Hue Rotate</option>
+          <option value="invert(100%)">Invert</option>
+          <option value="blur(3px)">Blur</option>
+          <option value="contrast(200%)">High Contrast</option>
+          <option value="brightness(150%)">Bright</option>
+          <option value="saturate(150%)">Saturated</option>
+          <option value="grayscale(50%) sepia(50%)">Vintage Mix</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="subheading">Ready?</p>
+    <div id="countdown"></div>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <div id="strip" style="display:none;"></div>
+    <button id="download-btn" style="display:none;">Download Strip</button>
+    <button id="again-btn" style="display:none;">Take Again</button>
+  </div>
+
+  <!-- Flash -->
+  <div id="flash"></div>
+
+  <script>
+    const startBtn = document.getElementById("start-btn");
+    const clickBtn = document.getElementById("click-btn");
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const countdown = document.getElementById("countdown");
+    const strip = document.getElementById("strip");
+    const filterSelect = document.getElementById("filter");
+    const againBtn = document.getElementById("again-btn");
+    const downloadBtn = document.getElementById("download-btn");
+    const homePage = document.getElementById("home-page");
+    const videoPage = document.getElementById("video-page");
+    const flash = document.getElementById("flash");
+    const cameraArea = document.getElementById("camera-area");
+
+    let stream;
+
+    startBtn.addEventListener("click", async () => {
+      homePage.style.display = "none";
+      videoPage.style.display = "flex";
+
+      stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+      video.style.filter = filterSelect.value;
+
+      filterSelect.addEventListener("change", () => {
+        video.style.filter = filterSelect.value;
+      });
+    });
+
+    clickBtn.addEventListener("click", async () => {
+      clickBtn.style.display = "none";
+      filterSelect.disabled = true;
+
+      const context = canvas.getContext("2d");
+      const width = video.videoWidth;
+      const height = video.videoHeight;
+      canvas.width = width;
+      canvas.height = height;
+
+      strip.innerHTML = "";
+      strip.style.display = "flex";
+
+      for (let i = 0; i < 3; i++) {
+        await runCountdown();
+        showFlash();
+        context.filter = filterSelect.value;
+        context.drawImage(video, 0, 0, width, height);
+        const dataURL = canvas.toDataURL("image/png");
+        const img = document.createElement("img");
+        img.src = dataURL;
+        strip.appendChild(img);
+      }
+
+      cameraArea.style.display = "none";
+      countdown.style.display = "none";
+      againBtn.style.display = "inline-block";
+      downloadBtn.style.display = "inline-block";
+    });
+
+    function showFlash() {
+      flash.style.opacity = 1;
+      setTimeout(() => {
+        flash.style.opacity = 0;
+      }, 100);
+    }
+
+    async function runCountdown() {
+      countdown.style.display = "block";
+      for (let i = 3; i > 0; i--) {
+        countdown.textContent = i;
+        await new Promise(r => setTimeout(r, 1000));
+      }
+      countdown.style.display = "none";
+    }
+
+    againBtn.addEventListener("click", () => {
+      location.reload();
+    });
+
+    downloadBtn.addEventListener("click", () => {
+  const imgs = strip.querySelectorAll("img");
+  if (imgs.length !== 3) return;
+
+  const imgWidth = imgs[0].naturalWidth;
+  const imgHeight = imgs[0].naturalHeight;
+  const borderSize = 16;
+  const spacing = 20;
+
+  const finalWidth = imgWidth + borderSize * 2;
+  const finalHeight = (imgHeight + borderSize * 2) * 3 + spacing * 2;
+
+  const stripCanvas = document.createElement("canvas");
+  stripCanvas.width = finalWidth;
+  stripCanvas.height = finalHeight;
+  const ctx = stripCanvas.getContext("2d");
+
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, finalWidth, finalHeight);
+
+  imgs.forEach((img, i) => {
+    const x = borderSize;
+    const y = i * (imgHeight + borderSize * 2 + spacing) + borderSize;
+    ctx.drawImage(img, x, y, imgWidth, imgHeight);
+  });
+
+  const finalDataURL = stripCanvas.toDataURL("image/png");
+  const link = document.createElement("a");
+  link.href = finalDataURL;
+  link.download = "photobooth-strip.png";
+  link.click();
+});
+
+    // Sparkles
+    function createSparkle() {
+      const sparkle = document.createElement('div');
+      sparkle.classList.add('sparkle');
+      sparkle.style.left = Math.random() * 100 + 'vw';
+      sparkle.style.top = Math.random() * 100 + 'vh';
+      sparkle.textContent = '✨';
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 3000);
+    }
+
+    setInterval(createSparkle, 500);
+  </script>
+</body>
+</html>
