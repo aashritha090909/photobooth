@@ -49,6 +49,14 @@
       animation: popIn 1.5s ease-out;
     }
 
+    h2 {
+      font-size: 3rem;
+      color: white;
+      text-shadow: 3px 3px #b478d6;
+      margin-bottom: 1rem;
+      animation: popIn 1.5s ease-out;
+    }
+
     .subheading {
       font-size: 1.5rem;
       color: #8e44ad;
@@ -73,11 +81,8 @@
     }
 
     #click-btn {
-      position: absolute;
-      top: 0.1rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
+      margin-top: 1rem;
+      align-self: center;
     }
 
     #camera-area {
@@ -183,7 +188,9 @@
   </div>
 
   <!-- Camera Page -->
+   
   <div id="video-page" class="page">
+    <h2>Ready?</h2>
     <button id="click-btn">Click!</button>
     <div id="camera-area">
       <video id="video" autoplay playsinline></video>
@@ -191,20 +198,22 @@
         <label for="filter">Filter:</label>
         <select id="filter">
           <option value="none">None</option>
-          <option value="grayscale(100%)">Grayscale</option>
+          <option value="grayscale(100%)">Mono</option>
           <option value="sepia(100%)">Sepia</option>
-          <option value="hue-rotate(90deg)">Hue Rotate</option>
-          <option value="invert(100%)">Invert</option>
+          <option value="invert(100%)">X-Ray</option>
           <option value="blur(3px)">Blur</option>
-          <option value="contrast(200%)">High Contrast</option>
-          <option value="brightness(150%)">Bright</option>
-          <option value="saturate(150%)">Saturated</option>
-          <option value="grayscale(50%) sepia(50%)">Vintage Mix</option>
+          <option value="contrast(170%)">Dramatic</option>
+          <option value="brightness(170%)">Bright</option>
+          <option value="saturate(170%)">Saturated</option>
+          <option value="saturate(250%)">Over Saturated</option>
+          <option value="grayscale(50%) sepia(50%)"> Retro</option>
+          <option value="hue-rotate(90deg)">Shrek</option>
         </select>
       </div>
     </div>
+    
 
-    <p class="subheading">Ready?</p>
+    
     <div id="countdown"></div>
     <canvas id="canvas" style="display:none;"></canvas>
     <div id="strip" style="display:none;"></div>
