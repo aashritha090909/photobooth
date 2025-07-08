@@ -238,10 +238,14 @@
     const videoPage = document.getElementById("video-page");
     const flash = document.getElementById("flash");
     const cameraArea = document.getElementById("camera-area");
+    const clickSound = new Audio("sounds/click.mp3");
+    const clickSound2 = new Audio("sounds/click2.mp3");
+    const shutterSound = new Audio("sounds/camera-flash.mp3");
 
     let stream;
 
     startBtn.addEventListener("click", async () => {
+      clickSound.play();
       homePage.style.display = "none";
       videoPage.style.display = "flex";
 
@@ -255,6 +259,7 @@
     });
 
     clickBtn.addEventListener("click", async () => {
+      clickSound2.play();
       clickBtn.style.display = "none";
       filterSelect.disabled = true;
 
@@ -270,6 +275,8 @@
       for (let i = 0; i < 3; i++) {
         await runCountdown();
         showFlash();
+        shutterSound.currentTime = 0;
+        shutterSound.play();
         context.filter = filterSelect.value;
         context.drawImage(video, 0, 0, width, height);
         const dataURL = canvas.toDataURL("image/png");
@@ -301,10 +308,12 @@
     }
 
     againBtn.addEventListener("click", () => {
+      clickSound2.play();
       location.reload();
     });
 
     downloadBtn.addEventListener("click", () => {
+      clickSound.play();
   const imgs = strip.querySelectorAll("img");
   if (imgs.length !== 3) return;
 

@@ -6,6 +6,7 @@ const snapshot = document.getElementById('snapshot');
 const filterSelect = document.getElementById('filter');
 const stickerSelect = document.getElementById('sticker');
 const countdownEl = document.getElementById('countdown');
+const clickSound = new Audio("sounds/click.mp3");
 
 const PHOTO_COUNT = 3;
 const COUNTDOWN_TIME = 3;
@@ -22,11 +23,13 @@ navigator.mediaDevices.getUserMedia({ video: true })
 
 // Apply live filter
 filterSelect.addEventListener('change', () => {
+  clickSound.play(); 
   video.style.filter = filterSelect.value;
 });
 
 // Main function: Take 3 photos with countdown
 snapButton.addEventListener('click', async () => {
+  clickSound.play();
   const width = video.videoWidth;
   const height = video.videoHeight;
   const borderSize = 40;
